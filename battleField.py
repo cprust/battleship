@@ -1321,6 +1321,18 @@ class Game(object):
                 print "Weapon out of range."
                 return False
             #####################
+            #make sure Destoyer has enough weapons 
+            if(weapon == "ASM" and self.player1Ships[count].ASM <= 0):
+                print "Out of ASMs."
+                return False
+            if(weapon == "HARM" and self.player1Ships[count].HARM <= 0):
+                print "Out of HARMs."
+                return False
+            if(weapon == "SRM" and self.player1Ships[count].SRM <= 0):
+                print "Out of SRMs."
+                return False
+            #####################################    
+                
             #print type(self.player1Ships[count]) is not Destroyer
             if((weapon == "ASM" or weapon == "SRM" or weapon == "HARM") and (type(self.player1Ships[count]) is not Destroyer)):#wrong weapon for ship
                 print "Ship does not carry this weapon. Reenter valid information."
@@ -1653,6 +1665,18 @@ class Game(object):
                 print "Weapon out of range."
                 return False
             #####################
+            #make sure Destoyer has enough weapons 
+            if(weapon == "ASM" and self.player2Ships[count].ASM <= 0):
+                print "Out of ASMs."
+                return False
+            if(weapon == "HARM" and self.player2Ships[count].HARM <= 0):
+                print "Out of HARMs."
+                return False
+            if(weapon == "SRM" and self.player2Ships[count].SRM <= 0):
+                print "Out of SRMs."
+                return False
+            #####################################    
+
             if((weapon == "ASM" or weapon == "SRM" or weapon == "HARM") and (type(self.player2Ships[count]) is not Destroyer)):#wrong weapon for ship
                 print "Ship does not carry this weapon. Reenter valid information."
                 return False
