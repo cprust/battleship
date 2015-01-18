@@ -625,6 +625,7 @@ class Game(object):
             if(self.checkPoints(pointsUsed) and self.checkinBounds(newPosition) and self.startIntersection(newPosition)):#checks
                 self.points = self.points - abs(pointsUsed)
                 self.player1Ships[x].position = newPosition
+                self.addtolist(newPosition)#adding to allStartPositions
             else:
                 self.addtolist(self.player1Ships[x].position)
                 print "There is an intersection, the new position is out of bounds, or there are not enough points. Reenter valid information."
@@ -686,6 +687,7 @@ class Game(object):
             if(self.checkPoints(pointsUsed) and self.checkinBounds(newPosition) and self.startIntersection(newPosition)):#checks
                 self.points = self.points - abs(pointsUsed)
                 self.player2Ships[x].position = newPosition
+                self.addtolist(newPosition)#adding to allStartPositions
             else:
                 self.addtolist(self.player2Ships[x].position)
                 print "There is an intersection, the new position is out of bounds, or there are not enough points. Reenter valid information."
