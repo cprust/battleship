@@ -71,6 +71,7 @@ class Game(object):
         self.HARMpoints = 4.0
         self.Planespoints = 2.0
         self.numGuesses = 0#so people don't just cheat
+        self.middleLine = 26#dividing line that seperates player1 from player2 at beginning of game -- used in printEmptyField() and printField()
 
     def checkPoints(self,pointsUsed):
         #checks if there are enough point to complete task, (but does not deduct them)
@@ -111,6 +112,8 @@ class Game(object):
     
     def printEmptyField(self):
         #This just prints an empty field at the beginning of the game
+
+        middleLine = self.middleLine
         field =[[0 for j in range(self.sizeFieldx)] for i in range(self.sizeFieldy)]
 
         for y in range (0,self.sizeFieldy):
@@ -128,10 +131,14 @@ class Game(object):
             else:
                 print str(yAxisPlaceHolders[y])+"|",
             for x in range(0,self.sizeFieldx):
-                if(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring)):
+                if(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring) and (field[y][x] != middleLine)):
                     print str(field[y][x]),
-                elif(x < self.sizeFieldx-1 and isinstance(field[y][x],basestring)):
+                elif(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring) and (field[y][x] == middleLine)):
+                    print '\033[95m' + str(field[y][x]) + '\033[0m',#prints middle line in different color
+                elif(x < self.sizeFieldx-1 and isinstance(field[y][x],basestring) and (field[y][x] != middleLine)):
                     print str(field[y][x]),
+                elif(x < self.sizeFieldx-1 and isinstance(field[y][x],basestring) and (field[y][x] == middleLine)):
+                    print '\033[95m' + str(field[y][x]) + '\033[0m',#prints middle line in different color
                 else:
                     print str(field[y][x])
                     
@@ -209,6 +216,9 @@ class Game(object):
         return True
 
     def masterInput(self,shipname,player,typeShip):
+        #calls on lower level input functions
+
+        middleLine = self.middleLine
         if(player == "Player1"):
             self.currentPlayer = 1
         else:
@@ -225,6 +235,39 @@ class Game(object):
         pos = self.shipUserInput(shipname,player)
         #print "here"
         position = self.makeUserInput2DList(pos,shipname,player)
+        
+        
+        if(player == "Player1"):#make sure x input is less than middleLine
+            flag = 0
+            while(True):
+                for x in range(0,len(position)):
+                    if(position[x][0] >= middleLine):
+                        flag = 1#raise flag
+                        print "Player1 must place ships to the left of the middle line."
+                        break
+                if(flag == 0):
+                    break
+                else:#(flag == 1):
+                    flag = 0#reset flag
+                    pos = self.shipUserInput(shipname,player)
+                    position = self.makeUserInput2DList(pos,shipname,player)
+
+        else: #(player == "Player2"): #make sure x input is greater than middleLine
+            flag = 0
+            while(True):
+                for x in range(0,len(position)):
+                    if(position[x][0] <= middleLine):
+                        flag = 1#raise flag
+                        print "Player2 must place ships to the right of the middle line."
+                        break
+                if(flag == 0):
+                    break
+                else:#(flag == 1):
+                    flag = 0#reset flag
+                    pos = self.shipUserInput(shipname,player)
+                    position = self.makeUserInput2DList(pos,shipname,player)
+        
+            
         while(not self.checkAdjointInput(position) or not self.checkinBounds(position) or sizeShip != len(position) or not self.startIntersection(position)):
             print "The value inputted are not adjoint, vertical, horizontal, in bounds, correctly sized, or intersects another ship."
             print "Reenter Valid Input."
@@ -237,6 +280,8 @@ class Game(object):
 
     def printField(self, player):
         #Will print the field of the player
+        
+        middleLine = self.middleLine
         for x in range(0,10):#print extra spaces
             print " "
         field =[[0 for j in range(self.sizeFieldx)] for i in range(self.sizeFieldy)]
@@ -286,11 +331,16 @@ class Game(object):
             else:
                 print str(yAxisPlaceHolders[y])+"|",
             for x in range(0,self.sizeFieldx):
-                if(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring)):
+                if(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring) and (field[y][x] != middleLine)):
                     if(x<10):
                         print str(field[y][x])+"|",
                     else:
                         print str(field[y][x]),
+                elif(x < self.sizeFieldx-1 and not isinstance(field[y][x],basestring) and (field[y][x] == middleLine)):
+                    if(x<10):
+                        print '\033[95m' + str(field[y][x])+"|" + '\033[0m',#print middle line in different color
+                    else:
+                        print '\033[95m' + str(field[y][x]) + '\033[0m',#print middle line in different color
                 elif(x < self.sizeFieldx-1 and isinstance(field[y][x],basestring)):
                     print str(field[y][x]),
                 else:
