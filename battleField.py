@@ -1,3 +1,6 @@
+#Author: Chris Prust
+#2015
+
 import sys
 import random
 import time
